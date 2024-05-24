@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  shop:
+    container_name: shopware_test
+    image: dockware/dev:latest
+    ports:
+      - "22:22"
+      - "80:80"
+      - "443:443"
+      - "8888:8888"
+      - "9998:9998"
+      - "9999:9999"
+      - "3306:3306"
+    volumes:
+      - "./custom:/var/www/html/custom"
+    networks:
+      - web
+    environment:
+      - XDEBUG_ENABLED=0
+
+networks:
+  web:
+    external: false

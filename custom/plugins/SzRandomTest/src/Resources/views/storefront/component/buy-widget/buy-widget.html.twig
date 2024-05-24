@@ -1,0 +1,39 @@
+{% sw_extends '@Storefront/storefront/component/buy-widget/buy-widget.html.twig' %}
+
+{% block buy_widget_buy_container %}
+    {{ parent() }}
+    {% block page_product_detail_in_stock_notification %}
+        {% if product.stock < 1 %}
+        <form
+                id="productDetailPageOutOfStockForm"
+                action="/out-of-stock-notification"
+                method="post"
+                class="out-of-stock-notification-widget"
+                data-add-to-cart="true">
+            <label>
+                {{ 'Email'|trans|sw_sanitize }}
+                <input
+                        type="email"
+                        name="email"
+                        class="form-control"
+                />
+            </label>
+            <div class="d-grid">
+                <button class="btn btn-primary"
+                        title="{{ 'Inform me then the time comes'|trans|striptags }}"
+                        aria-label="{{ 'Inform me then the time comes'|trans|striptags }}">
+                    {{ 'Inform me then the time comes'|trans|sw_sanitize }}
+                </button>
+            </div>
+            <input type="hidden"
+                   name="productId"
+                   data-product-id="true"
+                   value="{{ product.id }}">
+            <input type="hidden"
+                   name="productAvailableStock"
+                   data-available-stock="true"
+                   value="{{ product.stock }}">
+        </form>
+        {% endif %}
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,6 @@
+{% block sw_product_detail_content_tabs_reviews %}
+    {% parent %}
+    <sw-tabs-item :route="{ name: 'sw.product.detail.out-of-stock-notifications', params: { id: $route.params.id } }" title="Out of stock notifications">
+        Out of stock notifications
+    </sw-tabs-item>
+{% endblock %}

@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="SzRandomTest\Command\OutOfStockNotificationCommand">
+            <tag name="console.command"/>
+            <argument type="service" id="SzRandomTest\Service\OutOfStockNotificationHelper"/>
+        </service>
+
+        <service id="SzRandomTest\ScheduledTask\OutOfStockNotificationTask">
+            <tag name="shopware.scheduled.task"/>
+        </service>
+
+        <service id="SzRandomTest\ScheduledTask\OutOfStockNotificationHandler">
+            <argument type="service" id="scheduled_task.repository" />
+            <argument type="service" id="SzRandomTest\Service\OutOfStockNotificationHelper"/>
+            <tag name="messenger.message_handler" />
+        </service>
+
+
+        <service id="SzRandomTest\Service\OutOfStockNotificationHelper">
+            <argument type="service" id="out_of_stock_product.repository"/>
+            <argument type="service" id="Shopware\Core\Content\Mail\Service\MailService"/>
+            <argument type="service" id="sales_channel.repository"/>
+            <argument type="service" id="product.repository"/>
+        </service>
+
+
+        <service id="SzRandomTest\Subscriber\OutOfStockNotificationSubscriber">
+            <tag name="kernel.event_subscriber"/>
+            <argument type="service" id="SzRandomTest\Service\OutOfStockNotificationHelper"/>
+        </service>
+
+        <service id="SzRandomTest\Storefront\Controller\OutOfStockNotificationController" public="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
+
+        <service id="SzRandomTest\Core\Content\OutOfStockProduct\OutOfStockProductDefinition">
+            <tag name="shopware.entity.definition" entity="out_of_stock_product" />
+        </service>
+
+    </services>
+</container>
